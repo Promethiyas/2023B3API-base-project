@@ -24,13 +24,16 @@ export class UsersService {
     return insertedUser
   }
 
+
   findAll() {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+   async findOne(email : string): Promise<User | undefined> {
+     return await this.usersRepository.findOne({
+      where: {email}
+     });
+   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
