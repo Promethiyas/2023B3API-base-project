@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, UserRole } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { And, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -29,10 +29,15 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-   async findOne(email : string): Promise<User | undefined> {
+   async findOne(email : string, bool : boolean): Promise<User | undefined> {
      return await this.usersRepository.findOne({
       where: {email},
-      select: {password: true}
+      select: { 
+        id: true,
+        email: true,
+        password: bool,
+        username: true
+      }
      });
    }
 

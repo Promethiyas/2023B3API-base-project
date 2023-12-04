@@ -9,14 +9,14 @@ export class AuthService {
     private jwtService: JwtService
     ) {}
 
-    async signIn(mail: string, pass: string): Promise<any> {
-      const user = await this.usersService.findOne(mail); 
+    async signIn(email: string, pass: string): Promise<any> {
+      const user = await this.usersService.findOne(email, true); 
       if (!(await bcrypt.compare(pass, user.password))) {
         throw new UnauthorizedException();
       }else{
         const payload = { sub: user.id, role: user.role };
        return {
-         access_token: await this.jwtService.signAsync(payload, {secret: process.env.JWT_SECRET })
+         access_token: await this.jwtService.signAsync(payload, {secret: process.env.JWT_SECRET }), user
        };
       }
       }

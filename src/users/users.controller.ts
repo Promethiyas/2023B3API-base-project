@@ -20,7 +20,7 @@ export class UsersController {
   @HttpCode(HttpStatus.CREATED)
   @Post('auth/login')
   login(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.mail, signInDto.password);
+    return this.authService.signIn(signInDto.email, signInDto.password);
   }
   // @Get()
   // findAll() {
