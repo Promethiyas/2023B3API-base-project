@@ -31,7 +31,8 @@ export class UsersService {
 
    async findOne(email : string): Promise<User | undefined> {
      return await this.usersRepository.findOne({
-      where: {email}
+      where: {email},
+      select: {password: true}
      });
    }
 
