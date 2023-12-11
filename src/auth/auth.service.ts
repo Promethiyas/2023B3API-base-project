@@ -16,7 +16,7 @@ export class AuthService {
       }else{
         const payload = { sub: user.id, role: user.role };
        return {
-         access_token: await this.jwtService.signAsync(payload, {secret: process.env.JWT_SECRET }), user
+         access_token: await this.jwtService.signAsync(payload, {secret: process.env.JWT_SECRET }) // ,user
        };
       }
       }

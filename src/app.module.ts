@@ -4,6 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { JwtStrategy } from './jwt.strategy';
+import { ProjectsModule } from './projects/projects.module';
+import { Project } from './projects/entities/project.entity';
 
 @Module({
   imports: [
@@ -17,14 +20,15 @@ import { AuthModule } from './auth/auth.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User],
+        entities: [User, Project],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
     UsersModule,
+    ProjectsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [JwtStrategy],
 })
 export class AppModule {}
