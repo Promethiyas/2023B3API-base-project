@@ -42,7 +42,7 @@ export class UsersService {
     }
     });
   }
-
+  
   async findOneByID(id : string): Promise<User | undefined> {
     return await this.usersRepository.findOne({
     where: {id},

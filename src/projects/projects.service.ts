@@ -1,4 +1,4 @@
-import { Injectable, Req } from '@nestjs/common';
+import { Injectable, Req, Body } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,15 +16,15 @@ export class ProjectsService {
     private usersRepository: Repository<User>
   ) {}
 
-  async create(createProjectDto: CreateProjectDto){
+  async create(createProjectDto: CreateProjectDto, user: User){
     const newProject = this.ProjectRepository.create({
       ...createProjectDto,
    })
-   const test = this.findOneByID("16175195-58b2-4434-8db9-1dde698762bb")
-   console.log(test)
-   // je verifie le role de moi
-      // je verifie le role du referringEmployeeID
       const insertedProject = await this.ProjectRepository.save(newProject)
+      .then((project) => {
+        project.referringEmployee = user
+        return project
+      })
       return insertedProject;
 
   }
@@ -38,21 +38,21 @@ export class ProjectsService {
     });
  }
 
-  async findOneByID(id : string): Promise<User | undefined> {
-    return await this.usersRepository.findOne({
+  async findOneByID(id : string): Promise<Project | undefined> {
+    return await this.ProjectRepository.findOne({
     where: {id},
-    select: { 
-      id: true,
-      email: true,
-      username: true,
-      role : true
-    }
     });
   }
 
-  // findAll() {
-  //   return `This action returns all projects`;
-  // }
+  findAll() {
+   return this.ProjectRepository.find();
+ }
+ 
+ findAllButWithMe(id: string) {
+  return this.ProjectRepository.find({
+    where: {referringEmployeeId: id} //colonne puis valeur
+  });
+}
 
   // findOne(id: string) {
   //   return `This action returns a #${id} project`;
