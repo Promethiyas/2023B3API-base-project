@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, HttpCode, HttpStatus, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, HttpCode, HttpStatus, Req, ParseUUIDPipe, NotFoundException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -35,9 +35,14 @@ export class UsersController {
  }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  findOne(@Body() findbyidDTO: Record<string, any>) {
-    return this.usersService.findOneByID(findbyidDTO.id);
+  @Get(':id') // on remplace :id par un id
+  async findOne(@Param('id', new ParseUUIDPipe()) findId) {
+    const res = await this.usersService.findOneByID(findId)
+    if (res == null){
+      throw new NotFoundException();
+    }else {
+      return this.usersService.findOneByID(findId);
+    }    
   }
 
   @UseGuards(JwtAuthGuard)
