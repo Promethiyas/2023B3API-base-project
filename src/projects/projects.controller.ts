@@ -4,7 +4,6 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { JwtAuthGuard } from '../jwt-auth-guard';
 import { UsersService } from '../users/users.service';
-import { NotFoundError } from 'rxjs';
 
 
 @Controller('projects')

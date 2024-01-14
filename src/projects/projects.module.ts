@@ -9,12 +9,13 @@ import { UsersController } from '../users/users.controller';
 import { AuthService } from '../auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from '../jwt-auth-guard';
+import { ProjectUser } from '../project-users/entities/project-user.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Project]),
     TypeOrmModule.forFeature([User]),
-    
+    TypeOrmModule.forFeature([ProjectUser]),
   ],
   controllers: [ProjectsController, UsersController],
   providers: [ProjectsService, UsersService, AuthService, JwtService],
